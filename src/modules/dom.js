@@ -1,9 +1,42 @@
 import "./todo.js";
-import todoList from "./memory.js";
+import "./storage.js";
+import "./project.js";
+
+let projectList = [
+	{
+		title: "One",
+		description: "none",
+		todoList: [
+			{
+				title: "Sussy",
+				description: "none",
+				dueDate: "hz",
+			},
+			{
+				title: "Sussy2",
+				description: "none",
+				dueDate: "hz2",
+			},
+		],
+		addNewTodo(todo) {
+			this.todoList.push(todo);
+		},
+		removeTodo(todo) {
+			this.todoList.splice(this.todoList.indexOf(todo), 1);
+		},
+		updateTodo(todo, newTodo) {
+			this.todoList.splice(this.todoList.indexOf(todo), 1, newTodo);
+		},
+	},
+];
 
 const DomManipulation = (() => {
 	const main = document.querySelector("main");
-	function _createTaskInDom(item) {
+
+	const projectsContainer = document.querySelector(".projects-container");
+	const projectListDOM = projectsContainer.querySelector("ul");
+
+	function _createTaskInDom(item, currentProject, currentProjectIndex) {
 		const taskDiv = document.createElement("div");
 		taskDiv.className = "task";
 
@@ -42,6 +75,10 @@ const DomManipulation = (() => {
 		const deleteButton = document.createElement("button");
 		deleteButton.className = "delete";
 		deleteButton.textContent = "Delete";
+		deleteButton.addEventListener("click", (event) => {
+			currentProject.removeTodo(item);
+			display(currentProjectIndex);
+		});
 
 		btnContainerDiv.appendChild(editButton);
 		btnContainerDiv.appendChild(deleteButton);
@@ -55,12 +92,34 @@ const DomManipulation = (() => {
 
 		main.appendChild(taskDiv);
 	}
-	// function __addNewTask()
-	function display() {
+	function __createProjectInDom(item, project) {
+		const newProjectItem = document.createElement("li");
+		newProjectItem.textContent = item.title;
+		projectListDOM.appendChild(newProjectItem);
+
+		const newProjectButton =
+			projectsContainer.querySelector(".new-project-btn");
+
+		newProjectButton.addEventListener("click", () => {
+			console.log("new project placeholder");
+		});
+	}
+	function display(project) {
+		const projectArr = document.querySelectorAll(".project-list-element");
+		projectArr.forEach((item) => projectListDOM.removeChild(item));
+
+		for (let i = 0; i < projectList.length; i++) {
+			__createProjectInDom(projectList[i], project);
+		}
+
 		const taskArr = document.querySelectorAll(".task");
 		taskArr.forEach((task) => main.removeChild(task));
-		for (let i = 0; i < todoList.length; i++) {
-			_createTaskInDom(todoList[i]);
+		for (let i = 0; i < projectList[project].todoList.length; i++) {
+			_createTaskInDom(
+				projectList[project].todoList[i],
+				projectList[project],
+				project
+			);
 		}
 	}
 	return { display };
