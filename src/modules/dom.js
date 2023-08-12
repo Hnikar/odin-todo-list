@@ -2,54 +2,90 @@ import "./todo.js";
 import "./storage.js";
 import "./project.js";
 
-let projectList = [
+const projectList = [
 	{
-		title: "One",
-		description: "none",
-		todoList: [
+		title: "One Project",
+		description: "Project Description",
+		todos: [
 			{
-				title: "Sussy",
-				description: "none",
-				dueDate: "hz",
+				title: "Task 1",
+				description: "Task Description 1",
+				dueDate: "2023-08-15",
 			},
 			{
-				title: "Sussy2",
-				description: "none",
-				dueDate: "hz2",
+				title: "Task 2",
+				description: "Task Description 2",
+				dueDate: "2023-08-20",
 			},
 		],
 		addNewTodo(todo) {
-			this.todoList.push(todo);
+			this.todos.push(todo);
 		},
 		removeTodo(todo) {
-			this.todoList.splice(this.todoList.indexOf(todo), 1);
+			const index = this.todos.indexOf(todo);
+			if (index !== -1) {
+				this.todos.splice(index, 1);
+			}
 		},
 		updateTodo(todo, newTodo) {
-			this.todoList.splice(this.todoList.indexOf(todo), 1, newTodo);
+			const index = this.todos.indexOf(todo);
+			if (index !== -1) {
+				this.todos.splice(index, 1, newTodo);
+			}
+		},
+	},
+	{
+		title: "Two Project",
+		description: "Project Description",
+		todos: [
+			{
+				title: "Task 2-1",
+				description: "Task Description 1",
+				dueDate: "2023-08-15",
+			},
+			{
+				title: "Task 2-2",
+				description: "Task Description 2",
+				dueDate: "2023-08-20",
+			},
+		],
+		addNewTodo(todo) {
+			this.todos.push(todo);
+		},
+		removeTodo(todo) {
+			const index = this.todos.indexOf(todo);
+			if (index !== -1) {
+				this.todos.splice(index, 1);
+			}
+		},
+		updateTodo(todo, newTodo) {
+			const index = this.todos.indexOf(todo);
+			if (index !== -1) {
+				this.todos.splice(index, 1, newTodo);
+			}
 		},
 	},
 ];
 
 const DomManipulation = (() => {
-	const main = document.querySelector("main");
-
+	const mainElement = document.querySelector("main");
 	const projectsContainer = document.querySelector(".projects-container");
 	const projectListDOM = projectsContainer.querySelector("ul");
 
-	function _createTaskInDom(item, currentProject, currentProjectIndex) {
-		const taskDiv = document.createElement("div");
-		taskDiv.className = "task";
+	function createTaskElement(task, currentProject, currentProjectIndex) {
+		const taskElement = document.createElement("div");
+		taskElement.className = "task";
 
 		const leftDiv = document.createElement("div");
 		leftDiv.className = "left";
 
 		const checkboxDiv = document.createElement("div");
 		checkboxDiv.className = "checkbox";
-		checkboxDiv.textContent = "SU";
+		checkboxDiv.textContent = "✔️"; // Use a proper Unicode checkmark
 
 		const taskNameDiv = document.createElement("div");
 		taskNameDiv.className = "task-name";
-		taskNameDiv.textContent = item.title;
+		taskNameDiv.textContent = task.title;
 
 		leftDiv.appendChild(checkboxDiv);
 		leftDiv.appendChild(taskNameDiv);
@@ -59,11 +95,11 @@ const DomManipulation = (() => {
 
 		const detailsButton = document.createElement("button");
 		detailsButton.className = "details";
-		detailsButton.textContent = item.description;
+		detailsButton.textContent = task.description;
 
 		const dateDiv = document.createElement("div");
 		dateDiv.className = "date";
-		dateDiv.textContent = item.dueDate;
+		dateDiv.textContent = task.dueDate;
 
 		const btnContainerDiv = document.createElement("div");
 		btnContainerDiv.className = "btn-container";
@@ -76,7 +112,7 @@ const DomManipulation = (() => {
 		deleteButton.className = "delete";
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
-			currentProject.removeTodo(item);
+			currentProject.removeTodo(task);
 			display(currentProjectIndex);
 		});
 
@@ -87,41 +123,34 @@ const DomManipulation = (() => {
 		rightDiv.appendChild(dateDiv);
 		rightDiv.appendChild(btnContainerDiv);
 
-		taskDiv.appendChild(leftDiv);
-		taskDiv.appendChild(rightDiv);
+		taskElement.appendChild(leftDiv);
+		taskElement.appendChild(rightDiv);
 
-		main.appendChild(taskDiv);
+		mainElement.appendChild(taskElement);
 	}
-	function __createProjectInDom(item, project) {
-		const newProjectItem = document.createElement("li");
-		newProjectItem.textContent = item.title;
-		projectListDOM.appendChild(newProjectItem);
 
-		const newProjectButton =
-			projectsContainer.querySelector(".new-project-btn");
-
-		newProjectButton.addEventListener("click", () => {
-			console.log("new project placeholder");
+	function createProjectElement(project, projectIndex) {
+		const projectItem = document.createElement("li");
+		projectItem.textContent = project.title;
+		projectListDOM.appendChild(projectItem);
+		projectItem.classList.add("project-list-element");
+		projectItem.addEventListener("click", () => {
+			display(projectIndex);
 		});
 	}
-	function display(project) {
-		const projectArr = document.querySelectorAll(".project-list-element");
-		projectArr.forEach((item) => projectListDOM.removeChild(item));
 
-		for (let i = 0; i < projectList.length; i++) {
-			__createProjectInDom(projectList[i], project);
-		}
+	function display(projectIndex) {
+		projectListDOM.innerHTML = "";
+		projectList.forEach((project, index) => {
+			createProjectElement(project, index);
+		});
 
-		const taskArr = document.querySelectorAll(".task");
-		taskArr.forEach((task) => main.removeChild(task));
-		for (let i = 0; i < projectList[project].todoList.length; i++) {
-			_createTaskInDom(
-				projectList[project].todoList[i],
-				projectList[project],
-				project
-			);
-		}
+		mainElement.innerHTML = "";
+		projectList[projectIndex].todos.forEach((todo) => {
+			createTaskElement(todo, projectList[projectIndex], projectIndex);
+		});
 	}
+
 	return { display };
 })();
 

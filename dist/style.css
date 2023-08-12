@@ -47,7 +47,12 @@ ul {
 	padding-left: 18px;
 	list-style: none;
 }
-
+.project-list-element {
+	cursor: pointer;
+}
+.project-list-element:hover {
+	color: var(--accent);
+}
 .new-project-btn {
 	margin-left: 18px;
 	width: 80%;
