@@ -14,7 +14,6 @@ const DomManipulation = (() => {
 			description: "Todo Description",
 			dueDate: "2023-08-15",
 		};
-		console.log(Storage.projects[newTodoBtn.dataset.value]);
 		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
 		display(newTodoBtn.dataset.value);
 	});
@@ -30,15 +29,11 @@ const DomManipulation = (() => {
 			},
 			removeTodo(todo) {
 				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1);
-				}
+				this.todos.splice(index, 1);
 			},
 			updateTodo(todo, newTodo) {
 				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1, newTodo);
-				}
+				this.todos.splice(index, 1, newTodo);
 			},
 		};
 		Storage.projects.push(newProject);
@@ -87,7 +82,7 @@ const DomManipulation = (() => {
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
-			display(project.index);
+			display(newTodoBtn.dataset.value);
 		});
 
 		btnContainerDiv.appendChild(editButton);
@@ -125,6 +120,7 @@ const DomManipulation = (() => {
 			createtodoElement(todo, currentProject);
 		});
 	}
+
 	return { display };
 })();
 
