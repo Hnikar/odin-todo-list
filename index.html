@@ -15,31 +15,44 @@
 			<h2>This week</h2>
 			<div class="projects-container">
 				<h2>Projects</h2>
-				<ul>
-					<li class="project-list-element">Project1</li>
-					<li class="project-list-element">Project2</li>
-					<li class="project-list-element">Project3</li>
-					<li class="project-list-element">Project4</li>
-					<li class="project-list-element">Project5</li>
+				<ul class="project-list">
+					<li class="project-list-element" data-value="1">
+						Project1
+					</li>
+					<li class="project-list-element" data-value="2">
+						Project2
+					</li>
+					<li class="project-list-element" data-value="3">
+						Project3
+					</li>
+					<li class="project-list-element" data-value="4">
+						Project4
+					</li>
+					<li class="project-list-element" data-value="5">
+						Project5
+					</li>
 				</ul>
-				<button class="new-project-btn"><a>+</a></button>
+				<button id="new-project-btn"><a>+</a></button>
 			</div>
 		</div>
 		<main>
-			<div class="task">
-				<div class="left">
-					<div class="checkbox">SU</div>
-					<div class="task-name">Default</div>
-				</div>
-				<div class="right">
-					<button class="details">Details</button>
-					<div class="date">Mon 10 2023</div>
-					<div class="btn-container">
-						<button class="edit">Edit</button>
-						<button class="delete">Delete</button>
+			<ul class="todo-list">
+				<li class="todo">
+					<div class="left">
+						<div class="checkbox">SU</div>
+						<div class="todo-name">Default</div>
 					</div>
-				</div>
-			</div>
+					<div class="right">
+						<button class="details">Details</button>
+						<div class="date">Mon 10 2023</div>
+						<div class="btn-container">
+							<button class="edit">Edit</button>
+							<button class="delete">Delete</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<button id="new-todo-btn" data-value="0"><a>+</a></button>
 		</main>
 		<script src="main.js"></script>
 	</body>
