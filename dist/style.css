@@ -21,11 +21,12 @@ body {
 }
 
 header,
-main,
-main > *,
-main > * > * {
+.todo-list,
+.todo-list > *,
+.todo-list > * > * {
 	display: flex;
 	align-items: center;
+	gap: 1rem;
 }
 
 .sidebar {
@@ -41,7 +42,7 @@ main > * > * {
 	gap: 18px;
 }
 
-ul {
+.project-list {
 	margin: 0;
 	padding: 0;
 	padding-left: 18px;
@@ -53,28 +54,31 @@ ul {
 .project-list-element:hover {
 	color: var(--accent);
 }
-.new-project-btn {
+#new-project-btn {
 	margin-left: 18px;
 	width: 80%;
 	height: 32px;
 	font-weight: 700;
 	font-size: 2rem;
 }
-.new-project-btn > a {
+#new-project-btn > a {
 	position: relative;
 	bottom: 12px;
 }
 
 main {
+	display: flex;
 	overflow-y: scroll;
 	flex-direction: column;
 	border: solid var(--background);
 	background-color: var(--secondary);
 	border-radius: 32px;
-	padding: 16px;
-	gap: 16px;
 }
-.task {
+.todo-list {
+	flex-direction: column;
+	padding: 16px;
+}
+.todo {
 	color: var(--background);
 	justify-content: space-between;
 	background-color: var(--primary);
@@ -83,10 +87,17 @@ main {
 	border-radius: 24px;
 	padding: 16px;
 }
-
-.right,
-.left {
-	gap: 8px;
+#new-todo-btn {
+	width: 25%;
+	height: 48px;
+	font-weight: 700;
+	font-size: 2.5rem;
+	align-self: center;
+	border-radius: 24px;
+}
+#new-todo-btn > a {
+	position: relative;
+	bottom: 12px;
 }
 
 .checkbox {

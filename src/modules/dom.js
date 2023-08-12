@@ -8,16 +8,17 @@ const projectList = [
 		description: "Project Description",
 		todos: [
 			{
-				title: "Task 1",
-				description: "Task Description 1",
+				title: "todo 1",
+				description: "todo Description 1",
 				dueDate: "2023-08-15",
 			},
 			{
-				title: "Task 2",
-				description: "Task Description 2",
+				title: "todo 2",
+				description: "todo Description 2",
 				dueDate: "2023-08-20",
 			},
 		],
+		index: 0,
 		addNewTodo(todo) {
 			this.todos.push(todo);
 		},
@@ -39,16 +40,17 @@ const projectList = [
 		description: "Project Description",
 		todos: [
 			{
-				title: "Task 2-1",
-				description: "Task Description 1",
+				title: "todo 2-1",
+				description: "todo Description 1",
 				dueDate: "2023-08-15",
 			},
 			{
-				title: "Task 2-2",
-				description: "Task Description 2",
+				title: "todo 2-2",
+				description: "todo Description 2",
 				dueDate: "2023-08-20",
 			},
 		],
+		index: 1,
 		addNewTodo(todo) {
 			this.todos.push(todo);
 		},
@@ -68,13 +70,53 @@ const projectList = [
 ];
 
 const DomManipulation = (() => {
-	const mainElement = document.querySelector("main");
+	const todoList = document.querySelector(".todo-list");
 	const projectsContainer = document.querySelector(".projects-container");
 	const projectListDOM = projectsContainer.querySelector("ul");
 
-	function createTaskElement(task, currentProject, currentProjectIndex) {
-		const taskElement = document.createElement("div");
-		taskElement.className = "task";
+	const newTodoBtn = document.getElementById("new-todo-btn");
+	newTodoBtn.addEventListener("click", () => {
+		const newTodo = {
+			title: "New Todo",
+			description: "Todo Description",
+			dueDate: "2023-08-15",
+		};
+		console.log(projectList[newTodoBtn.dataset.value]);
+		projectList[newTodoBtn.dataset.value].addNewTodo(newTodo);
+		display(newTodoBtn.dataset.value);
+	});
+
+	const newProjectBtn = document.getElementById("new-project-btn");
+	newProjectBtn.addEventListener("click", () => {
+		const newProject = {
+			title: "One Project",
+			description: "Project Description",
+			todos: [],
+			index: projectList.length,
+			addNewTodo(todo) {
+				this.todos.push(todo);
+			},
+			removeTodo(todo) {
+				const index = this.todos.indexOf(todo);
+				if (index !== -1) {
+					this.todos.splice(index, 1);
+				}
+			},
+			updateTodo(todo, newTodo) {
+				const index = this.todos.indexOf(todo);
+				if (index !== -1) {
+					this.todos.splice(index, 1, newTodo);
+				}
+			},
+		};
+		projectList.push(newProject);
+		newTodoBtn.dataset.value = projectList.length - 1;
+		display(projectList.length - 1);
+	});
+
+	function createtodoElement(todo, project) {
+		const todoElement = document.createElement("li");
+		todoElement.className = "todo";
 
 		const leftDiv = document.createElement("div");
 		leftDiv.className = "left";
@@ -83,23 +125,23 @@ const DomManipulation = (() => {
 		checkboxDiv.className = "checkbox";
 		checkboxDiv.textContent = "✔️"; // Use a proper Unicode checkmark
 
-		const taskNameDiv = document.createElement("div");
-		taskNameDiv.className = "task-name";
-		taskNameDiv.textContent = task.title;
+		const todoNameDiv = document.createElement("div");
+		todoNameDiv.className = "todo-name";
+		todoNameDiv.textContent = todo.title;
 
 		leftDiv.appendChild(checkboxDiv);
-		leftDiv.appendChild(taskNameDiv);
+		leftDiv.appendChild(todoNameDiv);
 
 		const rightDiv = document.createElement("div");
 		rightDiv.className = "right";
 
 		const detailsButton = document.createElement("button");
 		detailsButton.className = "details";
-		detailsButton.textContent = task.description;
+		detailsButton.textContent = todo.description;
 
 		const dateDiv = document.createElement("div");
 		dateDiv.className = "date";
-		dateDiv.textContent = task.dueDate;
+		dateDiv.textContent = todo.dueDate;
 
 		const btnContainerDiv = document.createElement("div");
 		btnContainerDiv.className = "btn-container";
@@ -112,8 +154,8 @@ const DomManipulation = (() => {
 		deleteButton.className = "delete";
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
-			currentProject.removeTodo(task);
-			display(currentProjectIndex);
+			project.removeTodo(todo);
+			display(project.index);
 		});
 
 		btnContainerDiv.appendChild(editButton);
@@ -123,31 +165,31 @@ const DomManipulation = (() => {
 		rightDiv.appendChild(dateDiv);
 		rightDiv.appendChild(btnContainerDiv);
 
-		taskElement.appendChild(leftDiv);
-		taskElement.appendChild(rightDiv);
+		todoElement.appendChild(leftDiv);
+		todoElement.appendChild(rightDiv);
 
-		mainElement.appendChild(taskElement);
+		todoList.appendChild(todoElement);
 	}
 
-	function createProjectElement(project, projectIndex) {
+	function createProjectElement(project) {
 		const projectItem = document.createElement("li");
 		projectItem.textContent = project.title;
 		projectListDOM.appendChild(projectItem);
 		projectItem.classList.add("project-list-element");
 		projectItem.addEventListener("click", () => {
-			display(projectIndex);
+			display(project.index);
+			newTodoBtn.dataset.value = project.index;
 		});
 	}
 
 	function display(projectIndex) {
 		projectListDOM.innerHTML = "";
-		projectList.forEach((project, index) => {
-			createProjectElement(project, index);
+		projectList.forEach((project) => {
+			createProjectElement(project);
 		});
-
-		mainElement.innerHTML = "";
+		todoList.innerHTML = "";
 		projectList[projectIndex].todos.forEach((todo) => {
-			createTaskElement(todo, projectList[projectIndex], projectIndex);
+			createtodoElement(todo, projectList[projectIndex]);
 		});
 	}
 
