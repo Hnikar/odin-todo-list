@@ -1,71 +1,6 @@
 import "./todo.js";
-import "./storage.js";
+import Storage from "./storage.js";
 import "./project.js";
-
-const projectList = [
-	{
-		title: "One Project",
-		description: "Project Description",
-		todos: [
-			{
-				title: "todo 1",
-				description: "todo Description 1",
-				dueDate: "2023-08-15",
-			},
-			{
-				title: "todo 2",
-				description: "todo Description 2",
-				dueDate: "2023-08-20",
-			},
-		],
-		addNewTodo(todo) {
-			this.todos.push(todo);
-		},
-		removeTodo(todo) {
-			const index = this.todos.indexOf(todo);
-			if (index !== -1) {
-				this.todos.splice(index, 1);
-			}
-		},
-		updateTodo(todo, newTodo) {
-			const index = this.todos.indexOf(todo);
-			if (index !== -1) {
-				this.todos.splice(index, 1, newTodo);
-			}
-		},
-	},
-	{
-		title: "Two Project",
-		description: "Project Description",
-		todos: [
-			{
-				title: "todo 2-1",
-				description: "todo Description 1",
-				dueDate: "2023-08-15",
-			},
-			{
-				title: "todo 2-2",
-				description: "todo Description 2",
-				dueDate: "2023-08-20",
-			},
-		],
-		addNewTodo(todo) {
-			this.todos.push(todo);
-		},
-		removeTodo(todo) {
-			const index = this.todos.indexOf(todo);
-			if (index !== -1) {
-				this.todos.splice(index, 1);
-			}
-		},
-		updateTodo(todo, newTodo) {
-			const index = this.todos.indexOf(todo);
-			if (index !== -1) {
-				this.todos.splice(index, 1, newTodo);
-			}
-		},
-	},
-];
 
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
@@ -79,8 +14,8 @@ const DomManipulation = (() => {
 			description: "Todo Description",
 			dueDate: "2023-08-15",
 		};
-		console.log(projectList[newTodoBtn.dataset.value]);
-		projectList[newTodoBtn.dataset.value].addNewTodo(newTodo);
+		console.log(Storage.projects[newTodoBtn.dataset.value]);
+		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
 		display(newTodoBtn.dataset.value);
 	});
 
@@ -106,9 +41,9 @@ const DomManipulation = (() => {
 				}
 			},
 		};
-		projectList.push(newProject);
-		newTodoBtn.dataset.value = projectList.length - 1;
-		display(projectList.length - 1);
+		Storage.projects.push(newProject);
+		newTodoBtn.dataset.value = Storage.projects.length - 1;
+		display(Storage.projects.length - 1);
 	});
 
 	function createtodoElement(todo, project) {
@@ -181,11 +116,11 @@ const DomManipulation = (() => {
 
 	function display(projectIndex) {
 		projectListDOM.innerHTML = "";
-		projectList.forEach((project, index) => {
+		Storage.projects.forEach((project, index) => {
 			createProjectElement(project, index);
 		});
 		todoList.innerHTML = "";
-		const currentProject = projectList[projectIndex];
+		const currentProject = Storage.projects[projectIndex];
 		currentProject.todos.forEach((todo) => {
 			createtodoElement(todo, currentProject);
 		});
