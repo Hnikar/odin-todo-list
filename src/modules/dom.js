@@ -18,7 +18,6 @@ const projectList = [
 				dueDate: "2023-08-20",
 			},
 		],
-		index: 0,
 		addNewTodo(todo) {
 			this.todos.push(todo);
 		},
@@ -50,7 +49,6 @@ const projectList = [
 				dueDate: "2023-08-20",
 			},
 		],
-		index: 1,
 		addNewTodo(todo) {
 			this.todos.push(todo);
 		},
@@ -92,7 +90,6 @@ const DomManipulation = (() => {
 			title: "One Project",
 			description: "Project Description",
 			todos: [],
-			index: projectList.length,
 			addNewTodo(todo) {
 				this.todos.push(todo);
 			},
@@ -123,7 +120,7 @@ const DomManipulation = (() => {
 
 		const checkboxDiv = document.createElement("div");
 		checkboxDiv.className = "checkbox";
-		checkboxDiv.textContent = "✔️"; // Use a proper Unicode checkmark
+		checkboxDiv.textContent = "✔️";
 
 		const todoNameDiv = document.createElement("div");
 		todoNameDiv.className = "todo-name";
@@ -171,28 +168,28 @@ const DomManipulation = (() => {
 		todoList.appendChild(todoElement);
 	}
 
-	function createProjectElement(project) {
+	function createProjectElement(project, index) {
 		const projectItem = document.createElement("li");
 		projectItem.textContent = project.title;
 		projectListDOM.appendChild(projectItem);
 		projectItem.classList.add("project-list-element");
 		projectItem.addEventListener("click", () => {
-			display(project.index);
-			newTodoBtn.dataset.value = project.index;
+			display(index);
+			newTodoBtn.dataset.value = index;
 		});
 	}
 
 	function display(projectIndex) {
 		projectListDOM.innerHTML = "";
-		projectList.forEach((project) => {
-			createProjectElement(project);
+		projectList.forEach((project, index) => {
+			createProjectElement(project, index);
 		});
 		todoList.innerHTML = "";
-		projectList[projectIndex].todos.forEach((todo) => {
-			createtodoElement(todo, projectList[projectIndex]);
+		const currentProject = projectList[projectIndex];
+		currentProject.todos.forEach((todo) => {
+			createtodoElement(todo, currentProject);
 		});
 	}
-
 	return { display };
 })();
 
