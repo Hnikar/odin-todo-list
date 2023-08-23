@@ -1,2 +1,2 @@
 import DomManipulation from "./modules/dom";
-DomManipulation.display(0);
+DomManipulation.display(null);

@@ -1,6 +1,4 @@
-import "./todo.js";
 import Storage from "./storage.js";
-import "./project.js";
 
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
@@ -8,21 +6,108 @@ const DomManipulation = (() => {
 	const projectListDOM = projectsContainer.querySelector("ul");
 
 	const newTodoBtn = document.getElementById("new-todo-btn");
+	const addTodoForm = document.getElementById("addTodoForm");
+	const closeFormBtn = document.getElementById("closeFormBtn");
+	const todoForm = document.getElementById("todoForm");
+
+	const overlay = document.getElementById("overlay");
+
 	newTodoBtn.addEventListener("click", () => {
+		addTodoForm.style.display = "block";
+		overlay.style.display = "block";
+	});
+
+	closeFormBtn.addEventListener("click", () => {
+		addTodoForm.style.display = "none";
+		overlay.style.display = "none";
+	});
+
+	todoForm.addEventListener("submit", (event) => {
+		event.preventDefault();
+
+		const title = document.getElementById("todoTitle").value;
+		const description = document.getElementById("todoDescription").value;
+		const dueDate = document.getElementById("dueDate").value;
+
 		const newTodo = {
-			title: "New Todo",
-			description: "Todo Description",
-			dueDate: "2023-08-15",
+			title: title,
+			description: description,
+			dueDate: dueDate,
 		};
+
 		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
-		display(newTodoBtn.dataset.value);
+		DomManipulation.display(newTodoBtn.dataset.value);
+
+		todoForm.reset();
+		addTodoForm.style.display = "none";
+		overlay.style.display = "none";
 	});
 
 	const newProjectBtn = document.getElementById("new-project-btn");
+	const addProjectForm = document.getElementById("addProjectForm");
+	const closeProjectFormBtn = document.getElementById("closeProjectFormBtn");
+	const projectForm = document.getElementById("projectForm");
+
 	newProjectBtn.addEventListener("click", () => {
+		addProjectForm.style.display = "block";
+		overlay.style.display = "block";
+	});
+
+	closeProjectFormBtn.addEventListener("click", () => {
+		addProjectForm.style.display = "none";
+		overlay.style.display = "none";
+	});
+
+	function openEditTodoForm(todo, project) {
+		editTodoForm.style.display = "block";
+		overlay.style.display = "block";
+
+		const editTodoTitleInput = document.getElementById("editTodoTitle");
+		const editTodoDescriptionInput = document.getElementById(
+			"editTodoDescription"
+		);
+		const editDueDateInput = document.getElementById("editDueDate");
+
+		editTodoTitleInput.value = todo.title;
+		editTodoDescriptionInput.value = todo.description;
+		editDueDateInput.value = todo.dueDate;
+
+		editTodoForm
+			.querySelector("form")
+			.addEventListener("submit", (event) => {
+				event.preventDefault();
+
+				const updatedTodo = {
+					title: editTodoTitleInput.value,
+					description: editTodoDescriptionInput.value,
+					dueDate: editDueDateInput.value,
+				};
+
+				project.updateTodo(todo, updatedTodo);
+				DomManipulation.display(newTodoBtn.dataset.value);
+
+				editTodoForm.style.display = "none";
+				overlay.style.display = "none";
+			});
+	}
+
+	const editTodoForm = document.getElementById("editTodoForm");
+	const closeEditFormBtn = document.getElementById("closeEditFormBtn");
+
+	closeEditFormBtn.addEventListener("click", () => {
+		editTodoForm.style.display = "none";
+		overlay.style.display = "none";
+	});
+
+	projectForm.addEventListener("submit", (event) => {
+		event.preventDefault();
+
+		const title = document.getElementById("projectTitle").value;
+		const description = document.getElementById("projectDescription").value;
+
 		const newProject = {
-			title: "One Project",
-			description: "Project Description",
+			title: title,
+			description: description,
 			todos: [],
 			addNewTodo(todo) {
 				this.todos.push(todo);
@@ -36,9 +121,13 @@ const DomManipulation = (() => {
 				this.todos.splice(index, 1, newTodo);
 			},
 		};
+
 		Storage.projects.push(newProject);
-		newTodoBtn.dataset.value = Storage.projects.length - 1;
-		display(Storage.projects.length - 1);
+		DomManipulation.display(Storage.projects.length - 1);
+
+		projectForm.reset();
+		addProjectForm.style.display = "none";
+		overlay.style.display = "none";
 	});
 
 	function createtodoElement(todo, project) {
@@ -76,6 +165,9 @@ const DomManipulation = (() => {
 		const editButton = document.createElement("button");
 		editButton.className = "edit";
 		editButton.textContent = "Edit";
+		editButton.addEventListener("click", (event) => {
+			openEditTodoForm(todo, project);
+		});
 
 		const deleteButton = document.createElement("button");
 		deleteButton.className = "delete";
@@ -100,14 +192,41 @@ const DomManipulation = (() => {
 
 	function createProjectElement(project, index) {
 		const projectItem = document.createElement("li");
-		projectItem.textContent = project.title;
-		projectListDOM.appendChild(projectItem);
 		projectItem.classList.add("project-list-element");
+
+		const projectName = document.createElement("span");
+		projectName.textContent = project.title;
+		projectName.classList.add("project-name");
+		projectItem.appendChild(projectName);
+
+		const projectDescription = document.createElement("div");
+		projectDescription.classList.add("project-description");
+		projectDescription.textContent = project.description;
+		projectItem.appendChild(projectDescription);
+
+		const deleteButton = document.createElement("button");
+		deleteButton.textContent = "X";
+		deleteButton.classList.add("delete-project-btn");
+		projectItem.appendChild(deleteButton);
+
+		projectListDOM.appendChild(projectItem);
+
 		projectItem.addEventListener("click", () => {
 			display(index);
 			newTodoBtn.dataset.value = index;
 		});
+		deleteButton.addEventListener("click", (event) => {
+			event.stopPropagation();
+			Storage.projects.splice(index, 1);
+			DomManipulation.display(newTodoBtn.dataset.value);
+		});
 	}
+
+	const homeProjectHeader = document.querySelector(".sidebar h2");
+	homeProjectHeader.addEventListener("click", () => {
+		DomManipulation.display(null);
+		newTodoBtn.dataset.value = null;
+	});
 
 	function display(projectIndex) {
 		projectListDOM.innerHTML = "";
@@ -115,10 +234,21 @@ const DomManipulation = (() => {
 			createProjectElement(project, index);
 		});
 		todoList.innerHTML = "";
-		const currentProject = Storage.projects[projectIndex];
-		currentProject.todos.forEach((todo) => {
-			createtodoElement(todo, currentProject);
-		});
+
+		if (projectIndex === null) {
+			Storage.projects.forEach((project) => {
+				project.todos.forEach((todo) => {
+					createtodoElement(todo, project);
+				});
+			});
+			newTodoBtn.style.display = "none";
+		} else {
+			const currentProject = Storage.projects[projectIndex];
+			currentProject.todos.forEach((todo) => {
+				createtodoElement(todo, currentProject);
+			});
+			newTodoBtn.style.display = "block";
+		}
 	}
 
 	return { display };
