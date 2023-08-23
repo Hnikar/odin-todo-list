@@ -1,5 +1,6 @@
 import Storage from "./storage.js";
-
+import Todo from "./todo.js";
+import Project from "./project.js";
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
 	const projectsContainer = document.querySelector(".projects-container");
@@ -29,14 +30,10 @@ const DomManipulation = (() => {
 		const description = document.getElementById("todoDescription").value;
 		const dueDate = document.getElementById("dueDate").value;
 
-		const newTodo = {
-			title: title,
-			description: description,
-			dueDate: dueDate,
-		};
+		const newTodo = new Todo(title, description, dueDate);
 
 		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
-		DomManipulation.display(newTodoBtn.dataset.value);
+		display(newTodoBtn.dataset.value);
 
 		todoForm.reset();
 		addTodoForm.style.display = "none";
@@ -84,7 +81,7 @@ const DomManipulation = (() => {
 				};
 
 				project.updateTodo(todo, updatedTodo);
-				DomManipulation.display(newTodoBtn.dataset.value);
+				display(newTodoBtn.dataset.value);
 
 				editTodoForm.style.display = "none";
 				overlay.style.display = "none";
@@ -105,25 +102,10 @@ const DomManipulation = (() => {
 		const title = document.getElementById("projectTitle").value;
 		const description = document.getElementById("projectDescription").value;
 
-		const newProject = {
-			title: title,
-			description: description,
-			todos: [],
-			addNewTodo(todo) {
-				this.todos.push(todo);
-			},
-			removeTodo(todo) {
-				const index = this.todos.indexOf(todo);
-				this.todos.splice(index, 1);
-			},
-			updateTodo(todo, newTodo) {
-				const index = this.todos.indexOf(todo);
-				this.todos.splice(index, 1, newTodo);
-			},
-		};
+		const newProject = new Project(title, description, []);
 
 		Storage.projects.push(newProject);
-		DomManipulation.display(Storage.projects.length - 1);
+		display(Storage.projects.length - 1);
 
 		projectForm.reset();
 		addProjectForm.style.display = "none";
@@ -219,13 +201,13 @@ const DomManipulation = (() => {
 		deleteButton.addEventListener("click", (event) => {
 			event.stopPropagation();
 			Storage.projects.splice(index, 1);
-			DomManipulation.display(newTodoBtn.dataset.value);
+			display(newTodoBtn.dataset.value);
 		});
 	}
 
 	const homeProjectHeader = document.querySelector(".sidebar h2");
 	homeProjectHeader.addEventListener("click", () => {
-		DomManipulation.display(null);
+		display(null);
 		newTodoBtn.dataset.value = null;
 	});
 

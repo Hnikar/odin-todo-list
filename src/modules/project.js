@@ -1,18 +1,16 @@
 export default class Project {
-	constructor(title, description, todoList, index) {
+	constructor(title, description, todos) {
 		this.title = title;
 		this.description = description;
-		if (todoList === null) this.todoList = [];
-		else this.todoList = todos;
-		this.index = index;
+		this.todos = todos;
 	}
 	addNewTodo(todo) {
-		this.todoList.push(todo);
+		this.todos.push(todo);
 	}
 	removeTodo(todo) {
-		this.todoList.splice(this.todoList.indexOf(todo), 1);
+		this.todos.splice(this.todos.indexOf(todo), 1);
 	}
 	updateTodo(todo, newTodo) {
-		this.todoList.splice(this.todoList.indexOf(todo), 1, newTodo);
+		this.todos.splice(this.todos.indexOf(todo), 1, newTodo);
 	}
 }

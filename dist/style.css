@@ -39,7 +39,9 @@ header,
 	gap: 16px;
 	background-color: var(--background);
 }
-
+h2 {
+	cursor: pointer;
+}
 .projects-container {
 	display: flex;
 	flex-direction: column;
