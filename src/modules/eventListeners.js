@@ -69,6 +69,13 @@ const EventListeners = (() => {
 		return eventListeners;
 	};
 
+	eventListeners.attachHomeListener = (newTodoBtn) => {
+		const homeProjectHeader = document.querySelector(".sidebar h2");
+		homeProjectHeader.addEventListener("click", () => {
+			DomManipulation.display(null);
+			newTodoBtn.dataset.value = null;
+		});
+	};
 	return eventListeners;
 })();
 

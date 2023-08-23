@@ -14,7 +14,9 @@ const DomManipulation = (() => {
 	const eventListeners = EventListeners.attachTodoFormListeners(
 		newTodoBtn,
 		overlay
-	).attachProjectFormListeners(newProjectBtn, overlay);
+	)
+		.attachProjectFormListeners(newProjectBtn, overlay)
+		.attachHomeListener(newTodoBtn);
 
 	function createtodoElement(todo, project) {
 		const todoElement = document.createElement("li");
@@ -116,12 +118,6 @@ const DomManipulation = (() => {
 			display(newTodoBtn.dataset.value);
 		});
 	}
-
-	const homeProjectHeader = document.querySelector(".sidebar h2");
-	homeProjectHeader.addEventListener("click", () => {
-		display(null);
-		newTodoBtn.dataset.value = null;
-	});
 
 	function display(projectIndex) {
 		projectListDOM.innerHTML = "";
