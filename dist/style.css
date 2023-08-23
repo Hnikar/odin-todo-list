@@ -14,7 +14,7 @@
 body {
 	display: grid;
 	grid-template-columns: 256px 1fr;
-	font-family: Roboto, sans-serif;
+	font-family: Verdana, sans-serif;
 	min-height: 100vh;
 	max-height: 100vh;
 	overflow: hidden;
@@ -49,10 +49,13 @@ h2 {
 }
 
 .project-list {
+	display: flex;
+	flex-direction: column;
 	margin: 0;
 	padding: 0;
 	padding-left: 18px;
 	list-style: none;
+	gap: 6px;
 }
 
 .project-list-element {
@@ -73,7 +76,7 @@ h2 {
 
 #new-project-btn > a {
 	position: relative;
-	bottom: 12px;
+	bottom: 14px;
 }
 
 /* Main Content */
@@ -100,7 +103,12 @@ main {
 	border-radius: 24px;
 	padding: 16px;
 }
-
+.todo.completed {
+	background-color: var(--primary); /* Change background color */
+	color: var(--text); /* Change text color */
+	opacity: 0.6; /* Reduce opacity to make it appear dimmer */
+	text-decoration: line-through;
+}
 .todo .details {
 	position: relative;
 }
@@ -144,9 +152,35 @@ main {
 }
 
 .checkbox {
-	border: solid var(--accent);
+	appearance: none;
+	display: inline-block;
+	width: 23px;
+	height: 23px;
+	background-color: transparent;
+	border: 2px solid var(--accent);
+	border-radius: 4px;
+	position: relative;
+	margin-right: 10px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.checkbox::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-55%, -50%);
+	width: 15px;
+	height: 15px;
 	background-color: var(--accent);
-	border-radius: 8px;
+	border-radius: 2px;
+	opacity: 0;
+}
+
+.checkbox:checked::before {
+	opacity: 1;
 }
 
 .btn-container {
@@ -255,8 +289,7 @@ button:hover {
 .project-list-element .project-name {
 	display: inline-block;
 	max-width: 150px; /* Adjust the maximum width as needed */
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow: scroll;
 	white-space: nowrap;
 	cursor: pointer;
 }

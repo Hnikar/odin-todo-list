@@ -1,7 +1,7 @@
 const Storage = (() => {
 	const projects = [
 		{
-			title: "One Project",
+			title: "One Project Very long long long long",
 			description: "Project Description",
 			todos: [
 				{

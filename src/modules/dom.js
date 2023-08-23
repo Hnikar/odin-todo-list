@@ -30,7 +30,7 @@ const DomManipulation = (() => {
 		const description = document.getElementById("todoDescription").value;
 		const dueDate = document.getElementById("dueDate").value;
 
-		const newTodo = new Todo(title, description, dueDate);
+		const newTodo = new Todo(title, description, dueDate, false);
 
 		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
 		display(newTodoBtn.dataset.value);
@@ -115,19 +115,27 @@ const DomManipulation = (() => {
 	function createtodoElement(todo, project) {
 		const todoElement = document.createElement("li");
 		todoElement.className = "todo";
+		if (todo.completed) {
+			todoElement.classList.add("completed");
+		}
 
 		const leftDiv = document.createElement("div");
 		leftDiv.className = "left";
 
-		const checkboxDiv = document.createElement("div");
-		checkboxDiv.className = "checkbox";
-		checkboxDiv.textContent = "✔️";
+		const checkboxInput = document.createElement("input");
+		checkboxInput.type = "checkbox";
+		checkboxInput.className = "checkbox";
+		checkboxInput.checked = todo.completed;
+		checkboxInput.addEventListener("change", () => {
+			todo.toggleCompleted();
+			todoElement.classList.toggle("completed", todo.completed);
+		});
 
 		const todoNameDiv = document.createElement("div");
 		todoNameDiv.className = "todo-name";
 		todoNameDiv.textContent = todo.title;
 
-		leftDiv.appendChild(checkboxDiv);
+		leftDiv.appendChild(checkboxInput);
 		leftDiv.appendChild(todoNameDiv);
 
 		const rightDiv = document.createElement("div");
@@ -177,7 +185,7 @@ const DomManipulation = (() => {
 		const projectItem = document.createElement("li");
 		projectItem.classList.add("project-list-element");
 
-		const projectName = document.createElement("span");
+		const projectName = document.createElement("div");
 		projectName.textContent = project.title;
 		projectName.classList.add("project-name");
 		projectItem.appendChild(projectName);
