@@ -1,116 +1,20 @@
 import Storage from "./storage.js";
-import Todo from "./todo.js";
-import Project from "./project.js";
+import EventListeners from "./eventListeners.js";
+
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
 	const projectsContainer = document.querySelector(".projects-container");
 	const projectListDOM = projectsContainer.querySelector("ul");
 
-	const newTodoBtn = document.getElementById("new-todo-btn");
-	const addTodoForm = document.getElementById("addTodoForm");
-	const closeFormBtn = document.getElementById("closeFormBtn");
-	const todoForm = document.getElementById("todoForm");
-
 	const overlay = document.getElementById("overlay");
 
-	newTodoBtn.addEventListener("click", () => {
-		addTodoForm.style.display = "block";
-		overlay.style.display = "block";
-	});
-
-	closeFormBtn.addEventListener("click", () => {
-		addTodoForm.style.display = "none";
-		overlay.style.display = "none";
-	});
-
-	todoForm.addEventListener("submit", (event) => {
-		event.preventDefault();
-
-		const title = document.getElementById("todoTitle").value;
-		const description = document.getElementById("todoDescription").value;
-		const dueDate = document.getElementById("dueDate").value;
-
-		const newTodo = new Todo(title, description, dueDate, false);
-
-		Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
-		display(newTodoBtn.dataset.value);
-
-		todoForm.reset();
-		addTodoForm.style.display = "none";
-		overlay.style.display = "none";
-	});
-
+	const newTodoBtn = document.getElementById("new-todo-btn");
 	const newProjectBtn = document.getElementById("new-project-btn");
-	const addProjectForm = document.getElementById("addProjectForm");
-	const closeProjectFormBtn = document.getElementById("closeProjectFormBtn");
-	const projectForm = document.getElementById("projectForm");
 
-	newProjectBtn.addEventListener("click", () => {
-		addProjectForm.style.display = "block";
-		overlay.style.display = "block";
-	});
-
-	closeProjectFormBtn.addEventListener("click", () => {
-		addProjectForm.style.display = "none";
-		overlay.style.display = "none";
-	});
-
-	function openEditTodoForm(todo, project) {
-		editTodoForm.style.display = "block";
-		overlay.style.display = "block";
-
-		const editTodoTitleInput = document.getElementById("editTodoTitle");
-		const editTodoDescriptionInput = document.getElementById(
-			"editTodoDescription"
-		);
-		const editDueDateInput = document.getElementById("editDueDate");
-
-		editTodoTitleInput.value = todo.title;
-		editTodoDescriptionInput.value = todo.description;
-		editDueDateInput.value = todo.dueDate;
-
-		editTodoForm
-			.querySelector("form")
-			.addEventListener("submit", (event) => {
-				event.preventDefault();
-
-				const updatedTodo = {
-					title: editTodoTitleInput.value,
-					description: editTodoDescriptionInput.value,
-					dueDate: editDueDateInput.value,
-				};
-
-				project.updateTodo(todo, updatedTodo);
-				display(newTodoBtn.dataset.value);
-
-				editTodoForm.style.display = "none";
-				overlay.style.display = "none";
-			});
-	}
-
-	const editTodoForm = document.getElementById("editTodoForm");
-	const closeEditFormBtn = document.getElementById("closeEditFormBtn");
-
-	closeEditFormBtn.addEventListener("click", () => {
-		editTodoForm.style.display = "none";
-		overlay.style.display = "none";
-	});
-
-	projectForm.addEventListener("submit", (event) => {
-		event.preventDefault();
-
-		const title = document.getElementById("projectTitle").value;
-		const description = document.getElementById("projectDescription").value;
-
-		const newProject = new Project(title, description, []);
-
-		Storage.projects.push(newProject);
-		display(Storage.projects.length - 1);
-
-		projectForm.reset();
-		addProjectForm.style.display = "none";
-		overlay.style.display = "none";
-	});
+	const eventListeners = EventListeners.attachTodoFormListeners(
+		newTodoBtn,
+		overlay
+	).attachProjectFormListeners(newProjectBtn, overlay);
 
 	function createtodoElement(todo, project) {
 		const todoElement = document.createElement("li");
@@ -240,6 +144,7 @@ const DomManipulation = (() => {
 			});
 			newTodoBtn.style.display = "block";
 		}
+		Storage.saveProjectsToLocalStorage(Storage.projects);
 	}
 
 	return { display };

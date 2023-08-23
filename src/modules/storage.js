@@ -1,68 +1,35 @@
+import Project from "./project";
 const Storage = (() => {
-	const projects = [
-		{
-			title: "One Project Very long long long long",
-			description: "Project Description",
-			todos: [
-				{
-					title: "todo 1",
-					description: "todo Description 1",
-					dueDate: "2023-08-15",
-				},
-				{
-					title: "todo 2",
-					description: "todo Description 2",
-					dueDate: "2023-08-20",
-				},
-			],
-			addNewTodo(todo) {
-				this.todos.push(todo);
-			},
-			removeTodo(todo) {
-				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1);
-				}
-			},
-			updateTodo(todo, newTodo) {
-				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1, newTodo);
-				}
-			},
-		},
-		{
-			title: "Two Project",
-			description: "Project Description",
-			todos: [
-				{
-					title: "todo 2-1",
-					description: "todo Description 1",
-					dueDate: "2023-08-15",
-				},
-				{
-					title: "todo 2-2",
-					description: "todo Description 2",
-					dueDate: "2023-08-20",
-				},
-			],
-			addNewTodo(todo) {
-				this.todos.push(todo);
-			},
-			removeTodo(todo) {
-				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1);
-				}
-			},
-			updateTodo(todo, newTodo) {
-				const index = this.todos.indexOf(todo);
-				if (index !== -1) {
-					this.todos.splice(index, 1, newTodo);
-				}
-			},
-		},
-	];
-	return { projects };
+	let projects = [];
+
+	const saveProjectsToLocalStorage = (projectDisplayed) => {
+		projects = projectDisplayed;
+		localStorage.setItem("projects", JSON.stringify(projects));
+	};
+
+	const loadProjectsFromLocalStorage = () => {
+		const savedProjects =
+			JSON.parse(localStorage.getItem("projects")) || [];
+		projects = savedProjects.map((projectData) =>
+			recreateProjectInstance(projectData)
+		);
+	};
+
+	const recreateProjectInstance = (projectData) => {
+		const projectInstance = new Project(
+			projectData.title,
+			projectData.description,
+			projectData.todos
+		);
+
+		return projectInstance;
+	};
+	loadProjectsFromLocalStorage();
+	return {
+		projects,
+		saveProjectsToLocalStorage,
+		loadProjectsFromLocalStorage,
+	};
 })();
+
 export default Storage;
