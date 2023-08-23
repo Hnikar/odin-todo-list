@@ -153,7 +153,8 @@ const DomManipulation = (() => {
 
 		const detailsButton = document.createElement("button");
 		detailsButton.className = "details";
-		detailsButton.textContent = todo.description;
+		detailsButton.textContent = "Description"; // Change text content
+		detailsButton.dataset.description = todo.description; // Set description as a data attribute
 
 		const dateDiv = document.createElement("div");
 		dateDiv.className = "date";

@@ -1,5 +1,7 @@
+/* reset.css */
 @import url("./reset.css");
 
+/* Variables */
 :root {
 	--primary: #dd9e8a;
 	--secondary: #271007;
@@ -8,6 +10,7 @@
 	--text: #fbede9;
 }
 
+/* General Styles */
 body {
 	display: grid;
 	grid-template-columns: 256px 1fr;
@@ -29,15 +32,12 @@ header,
 	gap: 1rem;
 }
 
+/* Sidebar */
 .sidebar {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
 	background-color: var(--background);
-}
-
-h2 {
-	cursor: pointer;
 }
 
 .projects-container {
@@ -52,12 +52,15 @@ h2 {
 	padding-left: 18px;
 	list-style: none;
 }
+
 .project-list-element {
 	cursor: pointer;
 }
+
 .project-list-element:hover {
 	color: var(--accent);
 }
+
 #new-project-btn {
 	margin-left: 18px;
 	width: 80%;
@@ -65,11 +68,13 @@ h2 {
 	font-weight: 700;
 	font-size: 2rem;
 }
+
 #new-project-btn > a {
 	position: relative;
 	bottom: 12px;
 }
 
+/* Main Content */
 main {
 	display: flex;
 	overflow-y: scroll;
@@ -78,10 +83,12 @@ main {
 	background-color: var(--secondary);
 	border-radius: 32px;
 }
+
 .todo-list {
 	flex-direction: column;
 	padding: 16px;
 }
+
 .todo {
 	color: var(--background);
 	justify-content: space-between;
@@ -91,6 +98,35 @@ main {
 	border-radius: 24px;
 	padding: 16px;
 }
+
+.todo .details {
+	position: relative;
+}
+
+.todo .details::after {
+	content: attr(data-description);
+	display: none;
+	position: absolute;
+	top: -10px;
+	left: -150%;
+	transform: translateX(-50%);
+	background-color: var(--background);
+	border: 2px solid var(--accent);
+	border-radius: 8px;
+	padding: 10px;
+	font-size: 0.9rem;
+	color: var(--text);
+	width: 220px;
+	text-align: center;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	pointer-events: none;
+}
+
+.todo .details:hover::after {
+	display: block;
+}
+
 #new-todo-btn {
 	width: 25%;
 	height: 48px;
@@ -99,10 +135,12 @@ main {
 	align-self: center;
 	border-radius: 24px;
 }
+
 #new-todo-btn > a {
 	position: relative;
 	bottom: 12px;
 }
+
 .checkbox {
 	border: solid var(--accent);
 	background-color: var(--accent);
@@ -113,15 +151,6 @@ main {
 	display: flex;
 	width: min-content;
 	gap: 8px;
-}
-
-#description {
-	display: none;
-	position: absolute;
-	padding: 10px;
-	background-color: var(--background);
-	border: 1px solid var(--accent);
-	border-radius: 4px;
 }
 
 button {
@@ -137,7 +166,7 @@ button:hover {
 	border: solid #943d22;
 }
 
-/* Updated CSS for the popup form */
+/* Popup Forms */
 .popup-form {
 	display: none;
 	position: fixed;
@@ -201,7 +230,7 @@ button:hover {
 	background-color: #ccc;
 }
 
-/* Overlay behind the popup form */
+/* Overlay */
 .overlay {
 	position: fixed;
 	top: 0;
@@ -213,7 +242,7 @@ button:hover {
 	display: none;
 }
 
-/* Updated CSS for the tooltip-like box */
+/* Tooltip-like Box */
 .project-list-element {
 	display: flex;
 	justify-content: space-between;
