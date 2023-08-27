@@ -37,7 +37,11 @@ const EventListeners = (() => {
 		return eventListeners;
 	};
 
-	eventListeners.attachProjectFormListeners = (newProjectBtn, overlay) => {
+	eventListeners.attachProjectFormListeners = (
+		newProjectBtn,
+		newTodoBtn,
+		overlay
+	) => {
 		newProjectBtn.addEventListener("click", () => {
 			addProjectForm.style.display = "block";
 			overlay.style.display = "block";
@@ -58,6 +62,8 @@ const EventListeners = (() => {
 			const newProject = new Project(title, description, []);
 			Storage.projects.push(newProject);
 			DomManipulation.display(Storage.projects.length - 1);
+
+			newTodoBtn.dataset.value = Storage.projects.length - 1;
 
 			projectForm.reset();
 			addProjectForm.style.display = "none";
@@ -82,8 +88,8 @@ const EventListeners = (() => {
 	eventListeners.attachHomeListener = (newTodoBtn) => {
 		const homeProjectHeader = document.querySelector(".sidebar h2");
 		homeProjectHeader.addEventListener("click", () => {
-			DomManipulation.display(null);
 			newTodoBtn.dataset.value = null;
+			DomManipulation.display(null);
 		});
 	};
 

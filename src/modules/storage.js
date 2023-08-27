@@ -14,7 +14,6 @@ const Storage = (() => {
 		projects = savedProjects.map((projectData) =>
 			recreateProjectInstance(projectData)
 		);
-		console.log(projects);
 	};
 
 	const recreateProjectInstance = (projectData) => {

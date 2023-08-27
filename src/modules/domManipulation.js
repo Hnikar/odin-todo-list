@@ -37,7 +37,7 @@ const DomManipulation = (() => {
 	}
 
 	EventListeners.attachTodoFormListeners(newTodoBtn, overlay)
-		.attachProjectFormListeners(newProjectBtn, overlay)
+		.attachProjectFormListeners(newProjectBtn, newTodoBtn, overlay)
 		.attachEditFormListeners(editTodoForm, closeEditFormBtn)
 		.attachHomeListener(newTodoBtn);
 
@@ -47,7 +47,6 @@ const DomManipulation = (() => {
 		if (todo.completed) {
 			todoElement.classList.add("completed");
 		}
-		console.log(todo);
 
 		const leftDiv = document.createElement("div");
 		leftDiv.className = "left";
@@ -96,8 +95,12 @@ const DomManipulation = (() => {
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
-			if (Storage.projects.length - 1 <= 0) display(null);
-			else display(Storage.projects.length - 1);
+			console.log(newTodoBtn.dataset.value);
+			if (newTodoBtn.dataset.value == "null") {
+				display(null);
+			} else {
+				display(newTodoBtn.dataset.value);
+			}
 		});
 
 		btnContainerDiv.appendChild(editButton);
@@ -141,7 +144,10 @@ const DomManipulation = (() => {
 		deleteButton.addEventListener("click", (event) => {
 			event.stopPropagation();
 			Storage.projects.splice(index, 1);
-			display(newTodoBtn.dataset.value);
+			console.log(Storage.projects.length - 1);
+			if (Storage.projects.length === 0) {
+				display(null);
+			} else display(newTodoBtn.dataset.value);
 		});
 	}
 
