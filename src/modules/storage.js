@@ -1,4 +1,5 @@
 import Project from "./project";
+import Todo from "./todo";
 const Storage = (() => {
 	let projects = [];
 
@@ -13,17 +14,29 @@ const Storage = (() => {
 		projects = savedProjects.map((projectData) =>
 			recreateProjectInstance(projectData)
 		);
+		console.log(projects);
 	};
 
 	const recreateProjectInstance = (projectData) => {
 		const projectInstance = new Project(
 			projectData.title,
 			projectData.description,
-			projectData.todos
+			[]
 		);
+
+		projectData.todos.forEach((todoData) => {
+			const todoInstance = new Todo(
+				todoData.title,
+				todoData.details,
+				todoData.dueDate,
+				todoData.completed
+			);
+			projectInstance.addNewTodo(todoInstance);
+		});
 
 		return projectInstance;
 	};
+
 	loadProjectsFromLocalStorage();
 	return {
 		projects,

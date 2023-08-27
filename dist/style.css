@@ -114,7 +114,7 @@ main {
 }
 
 .todo .details::after {
-	content: attr(data-description);
+	content: attr(data-details);
 	display: none;
 	position: absolute;
 	top: -10px;

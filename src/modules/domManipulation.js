@@ -11,11 +11,34 @@ const DomManipulation = (() => {
 	const newTodoBtn = document.getElementById("new-todo-btn");
 	const newProjectBtn = document.getElementById("new-project-btn");
 
-	const eventListeners = EventListeners.attachTodoFormListeners(
-		newTodoBtn,
-		overlay
-	)
+	const editTodoForm = document.getElementById("editTodoForm");
+	const closeEditFormBtn = document.getElementById("closeEditFormBtn");
+
+	function openEditTodoForm(todo, project) {
+		editTodoForm.style.display = "block";
+		overlay.style.display = "block";
+
+		const editTodoTitleInput = document.getElementById("editTodoTitle");
+		const editTodoDetailsInput = document.getElementById("editTodoDetails");
+		const editDueDateInput = document.getElementById("editDueDate");
+
+		editTodoTitleInput.value = todo.title;
+		editTodoDetailsInput.value = todo.details;
+		editDueDateInput.value = todo.dueDate;
+		Detailsteners.attachEditFormSubmitListener(
+			editTodoForm,
+			editTodoTitleInput,
+			editTodoDetailsInput,
+			editDueDateInput,
+			project,
+			todo,
+			newTodoBtn
+		);
+	}
+
+	EventListeners.attachTodoFormListeners(newTodoBtn, overlay)
 		.attachProjectFormListeners(newProjectBtn, overlay)
+		.attachEditFormListeners(editTodoForm, closeEditFormBtn)
 		.attachHomeListener(newTodoBtn);
 
 	function createtodoElement(todo, project) {
@@ -24,6 +47,7 @@ const DomManipulation = (() => {
 		if (todo.completed) {
 			todoElement.classList.add("completed");
 		}
+		console.log(todo);
 
 		const leftDiv = document.createElement("div");
 		leftDiv.className = "left";
@@ -35,6 +59,7 @@ const DomManipulation = (() => {
 		checkboxInput.addEventListener("change", () => {
 			todo.toggleCompleted();
 			todoElement.classList.toggle("completed", todo.completed);
+			Storage.saveProjectsToLocalStorage(Storage.projects);
 		});
 
 		const todoNameDiv = document.createElement("div");
@@ -49,8 +74,8 @@ const DomManipulation = (() => {
 
 		const detailsButton = document.createElement("button");
 		detailsButton.className = "details";
-		detailsButton.textContent = "Description"; // Change text content
-		detailsButton.dataset.description = todo.description; // Set description as a data attribute
+		detailsButton.textContent = "Details";
+		detailsButton.dataset.details = todo.details;
 
 		const dateDiv = document.createElement("div");
 		dateDiv.className = "date";
@@ -71,7 +96,8 @@ const DomManipulation = (() => {
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
-			display(newTodoBtn.dataset.value);
+			if (Storage.projects.length - 1 <= 0) display(null);
+			else display(Storage.projects.length - 1);
 		});
 
 		btnContainerDiv.appendChild(editButton);
