@@ -109,10 +109,10 @@ const EventListeners = (() => {
 
 				const updatedTodo = {
 					title: editTodoTitleInput.value,
-					Details: editTodoDetailsInput.value,
+					details: editTodoDetailsInput.value,
 					dueDate: editDueDateInput.value,
+					completed: todo.completed,
 				};
-
 				project.updateTodo(todo, updatedTodo);
 				DomManipulation.display(newTodoBtn.dataset.value);
 

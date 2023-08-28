@@ -25,7 +25,7 @@ const DomManipulation = (() => {
 		editTodoTitleInput.value = todo.title;
 		editTodoDetailsInput.value = todo.details;
 		editDueDateInput.value = todo.dueDate;
-		Detailsteners.attachEditFormSubmitListener(
+		EventListeners.attachEditFormSubmitListener(
 			editTodoForm,
 			editTodoTitleInput,
 			editTodoDetailsInput,
@@ -95,8 +95,10 @@ const DomManipulation = (() => {
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
-			console.log(newTodoBtn.dataset.value);
-			if (newTodoBtn.dataset.value == "null") {
+			if (
+				newTodoBtn.dataset.value == "null" ||
+				newTodoBtn.dataset.value == null
+			) {
 				display(null);
 			} else {
 				display(newTodoBtn.dataset.value);
@@ -144,7 +146,6 @@ const DomManipulation = (() => {
 		deleteButton.addEventListener("click", (event) => {
 			event.stopPropagation();
 			Storage.projects.splice(index, 1);
-			console.log(Storage.projects.length - 1);
 			if (Storage.projects.length === 0) {
 				display(null);
 			} else display(newTodoBtn.dataset.value);
