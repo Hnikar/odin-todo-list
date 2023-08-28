@@ -8,29 +8,28 @@ const EventListeners = (() => {
 
 	eventListeners.attachTodoFormListeners = (newTodoBtn, overlay) => {
 		newTodoBtn.addEventListener("click", () => {
-			addTodoForm.style.display = "block";
+			todoForm.style.display = "block";
 			overlay.style.display = "block";
 		});
 
-		closeFormBtn.addEventListener("click", () => {
-			addTodoForm.style.display = "none";
+		formCancelBtn.addEventListener("click", () => {
+			todoForm.style.display = "none";
 			overlay.style.display = "none";
 		});
 
-		todoForm.addEventListener("submit", (event) => {
+		todoForm.querySelector("form").addEventListener("submit", (event) => {
 			event.preventDefault();
 
 			const title = document.getElementById("todoTitle").value;
 			const details = document.getElementById("todoDetails").value;
-			const dueDate = document.getElementById("dueDate").value;
+			const dueDate = document.getElementById("todoDueDate").value;
 
 			const newTodo = new Todo(title, details, dueDate, false);
 
 			Storage.projects[newTodoBtn.dataset.value].addNewTodo(newTodo);
 			DomManipulation.display(newTodoBtn.dataset.value);
-
-			todoForm.reset();
-			addTodoForm.style.display = "none";
+			todoForm.querySelector("form").reset();
+			todoForm.style.display = "none";
 			overlay.style.display = "none";
 		});
 
@@ -82,34 +81,32 @@ const EventListeners = (() => {
 	};
 
 	eventListeners.attachEditFormSubmitListener = (
-		editTodoForm,
+		todoForm,
 		editTodoTitleInput,
 		editTodoDetailsInput,
 		editDueDateInput,
 		project,
 		todo,
 		newTodoBtn,
-		closeEditFormBtn
+		formCancelBtn
 	) => {
-		editTodoForm
-			.querySelector("form")
-			.addEventListener("submit", (event) => {
-				event.preventDefault();
+		todoForm.querySelector("form").addEventListener("submit", (event) => {
+			event.preventDefault();
 
-				const updatedTodo = {
-					title: editTodoTitleInput.value,
-					details: editTodoDetailsInput.value,
-					dueDate: editDueDateInput.value,
-					completed: todo.completed,
-				};
-				project.updateTodo(todo, updatedTodo);
-				DomManipulation.display(newTodoBtn.dataset.value);
+			const updatedTodo = {
+				title: editTodoTitleInput.value,
+				details: editTodoDetailsInput.value,
+				dueDate: editDueDateInput.value,
+				completed: todo.completed,
+			};
+			project.updateTodo(todo, updatedTodo);
+			DomManipulation.display(newTodoBtn.dataset.value);
 
-				editTodoForm.style.display = "none";
-				overlay.style.display = "none";
-			});
-		closeEditFormBtn.addEventListener("click", () => {
-			editTodoForm.style.display = "none";
+			todoForm.style.display = "none";
+			overlay.style.display = "none";
+		});
+		formCancelBtn.addEventListener("click", () => {
+			todoForm.style.display = "none";
 			overlay.style.display = "none";
 		});
 

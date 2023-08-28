@@ -36,9 +36,9 @@
 			</ul>
 			<button id="new-todo-btn" data-value="0"><a>+</a></button>
 		</main>
-		<div id="addTodoForm" class="popup-form">
-			<h2>Add New Todo</h2>
-			<form id="todoForm">
+		<div id="todoForm" class="popup-form">
+			<h2 id="formTitle">Add New Todo</h2>
+			<form>
 				<label for="todoTitle">Title:</label>
 				<input
 					type="text"
@@ -54,11 +54,17 @@
 				></textarea
 				><br />
 				<label for="dueDate">Due Date:</label>
-				<input type="date" id="dueDate" name="dueDate" required /><br />
-				<button type="submit">Add Todo</button>
-				<button type="button" id="closeFormBtn">Cancel</button>
+				<input
+					type="date"
+					id="todoDueDate"
+					name="todoDueDate"
+					required
+				/><br />
+				<button type="submit" id="formSubmitBtn">Add Todo</button>
+				<button type="button" id="formCancelBtn">Cancel</button>
 			</form>
 		</div>
+
 		<div id="addProjectForm" class="popup-form">
 			<h2>Add New Project</h2>
 			<form id="projectForm">
@@ -78,34 +84,6 @@
 				><br />
 				<button type="submit">Add Project</button>
 				<button type="button" id="closeProjectFormBtn">Cancel</button>
-			</form>
-		</div>
-		<div id="editTodoForm" class="popup-form">
-			<h2>Edit Todo</h2>
-			<form>
-				<label for="editTodoTitle">Title:</label>
-				<input
-					type="text"
-					id="editTodoTitle"
-					name="editTodoTitle"
-					required
-				/><br />
-				<label for="editTodoDetails">Details:</label>
-				<textarea
-					id="editTodoDetails"
-					name="editTodoDetails"
-					rows="4"
-				></textarea
-				><br />
-				<label for="editDueDate">Due Date:</label>
-				<input
-					type="date"
-					id="editDueDate"
-					name="editDueDate"
-					required
-				/><br />
-				<button type="submit">Update Todo</button>
-				<button type="button" id="closeEditFormBtn">Cancel</button>
 			</form>
 		</div>
 

@@ -11,30 +11,30 @@ const DomManipulation = (() => {
 	const newTodoBtn = document.getElementById("new-todo-btn");
 	const newProjectBtn = document.getElementById("new-project-btn");
 
-	const editTodoForm = document.getElementById("editTodoForm");
-	const closeEditFormBtn = document.getElementById("closeEditFormBtn");
+	const todoForm = document.getElementById("todoForm");
+	const formCancelBtn = document.getElementById("formCancelBtn");
 
-	function openEditTodoForm(todo, project) {
-		editTodoForm.style.display = "block";
+	function editTodoForm(todo, project) {
+		todoForm.style.display = "block";
 		overlay.style.display = "block";
 
-		const editTodoTitleInput = document.getElementById("editTodoTitle");
-		const editTodoDetailsInput = document.getElementById("editTodoDetails");
-		const editDueDateInput = document.getElementById("editDueDate");
+		const editTodoTitleInput = document.getElementById("todoTitle");
+		const editTodoDetailsInput = document.getElementById("todoDetails");
+		const editTodoDueDateInput = document.getElementById("todoDueDate");
 
 		editTodoTitleInput.value = todo.title;
 		editTodoDetailsInput.value = todo.details;
-		editDueDateInput.value = todo.dueDate;
+		editTodoDueDateInput.value = todo.dueDate;
 
 		EventListeners.attachEditFormSubmitListener(
-			editTodoForm,
+			todoForm,
 			editTodoTitleInput,
 			editTodoDetailsInput,
-			editDueDateInput,
+			editTodoDueDateInput,
 			project,
 			todo,
 			newTodoBtn,
-			closeEditFormBtn
+			formCancelBtn
 		);
 	}
 
@@ -88,7 +88,7 @@ const DomManipulation = (() => {
 		editButton.className = "edit";
 		editButton.textContent = "Edit";
 		editButton.addEventListener("click", (event) => {
-			openEditTodoForm(todo, project);
+			editTodoForm(todo, project);
 		});
 
 		const deleteButton = document.createElement("button");
