@@ -25,6 +25,7 @@ const DomManipulation = (() => {
 		editTodoTitleInput.value = todo.title;
 		editTodoDetailsInput.value = todo.details;
 		editDueDateInput.value = todo.dueDate;
+
 		EventListeners.attachEditFormSubmitListener(
 			editTodoForm,
 			editTodoTitleInput,
@@ -32,13 +33,13 @@ const DomManipulation = (() => {
 			editDueDateInput,
 			project,
 			todo,
-			newTodoBtn
+			newTodoBtn,
+			closeEditFormBtn
 		);
 	}
 
 	EventListeners.attachTodoFormListeners(newTodoBtn, overlay)
 		.attachProjectFormListeners(newProjectBtn, newTodoBtn, overlay)
-		.attachEditFormListeners(editTodoForm, closeEditFormBtn)
 		.attachHomeListener(newTodoBtn);
 
 	function createtodoElement(todo, project) {

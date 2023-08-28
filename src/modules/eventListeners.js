@@ -73,18 +73,6 @@ const EventListeners = (() => {
 		return eventListeners;
 	};
 
-	eventListeners.attachEditFormListeners = (
-		editTodoForm,
-		closeEditFormBtn
-	) => {
-		closeEditFormBtn.addEventListener("click", () => {
-			editTodoForm.style.display = "none";
-			overlay.style.display = "none";
-		});
-
-		return eventListeners;
-	};
-
 	eventListeners.attachHomeListener = (newTodoBtn) => {
 		const homeProjectHeader = document.querySelector(".sidebar h2");
 		homeProjectHeader.addEventListener("click", () => {
@@ -100,7 +88,8 @@ const EventListeners = (() => {
 		editDueDateInput,
 		project,
 		todo,
-		newTodoBtn
+		newTodoBtn,
+		closeEditFormBtn
 	) => {
 		editTodoForm
 			.querySelector("form")
@@ -119,6 +108,10 @@ const EventListeners = (() => {
 				editTodoForm.style.display = "none";
 				overlay.style.display = "none";
 			});
+		closeEditFormBtn.addEventListener("click", () => {
+			editTodoForm.style.display = "none";
+			overlay.style.display = "none";
+		});
 
 		return eventListeners;
 	};
