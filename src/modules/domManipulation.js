@@ -4,7 +4,7 @@ import EventListeners from "./eventListeners.js";
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
 	const projectsContainer = document.querySelector(".projects-container");
-	const projectListDOM = projectsContainer.querySelector("ul");
+	const projectList = projectsContainer.querySelector("ul");
 
 	const overlay = document.getElementById("overlay");
 
@@ -138,7 +138,7 @@ const DomManipulation = (() => {
 		deleteButton.classList.add("delete-project-btn");
 		projectItem.appendChild(deleteButton);
 
-		projectListDOM.appendChild(projectItem);
+		projectList.appendChild(projectItem);
 
 		projectItem.addEventListener("click", () => {
 			display(index);
@@ -154,7 +154,7 @@ const DomManipulation = (() => {
 	}
 
 	function display(projectIndex) {
-		projectListDOM.innerHTML = "";
+		projectList.innerHTML = "";
 		Storage.projects.forEach((project, index) => {
 			createProjectElement(project, index);
 		});
