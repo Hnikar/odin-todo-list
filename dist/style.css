@@ -1,7 +1,5 @@
-/* reset.css */
 @import url("./reset.css");
 
-/* Variables */
 :root {
 	--primary: #dd9e8a;
 	--secondary: #271007;
@@ -10,7 +8,6 @@
 	--text: #fbede9;
 }
 
-/* General Styles */
 body {
 	display: grid;
 	grid-template-columns: 256px 1fr;
@@ -32,7 +29,6 @@ header,
 	gap: 1rem;
 }
 
-/* Sidebar */
 .sidebar {
 	display: flex;
 	flex-direction: column;
@@ -79,7 +75,6 @@ h2 {
 	bottom: 14px;
 }
 
-/* Main Content */
 main {
 	display: flex;
 	overflow-y: scroll;
@@ -105,9 +100,9 @@ main {
 	padding: 16px;
 }
 .todo.completed {
-	background-color: var(--primary); /* Change background color */
-	color: var(--text); /* Change text color */
-	opacity: 0.6; /* Reduce opacity to make it appear dimmer */
+	background-color: var(--primary);
+	color: var(--text);
+	opacity: 0.6;
 	text-decoration: line-through;
 }
 .todo .details {
@@ -203,7 +198,6 @@ button:hover {
 	border: solid #943d22;
 }
 
-/* Popup Forms */
 .popup-form {
 	display: none;
 	position: fixed;
@@ -271,7 +265,6 @@ button:hover {
 	display: flex;
 }
 
-/* Overlay */
 .overlay {
 	position: fixed;
 	top: 0;
@@ -283,7 +276,6 @@ button:hover {
 	display: none;
 }
 
-/* Tooltip-like Box */
 .project-list-element {
 	display: flex;
 	justify-content: space-between;
@@ -293,7 +285,7 @@ button:hover {
 
 .project-list-element .project-name {
 	display: inline-block;
-	max-width: 150px; /* Adjust the maximum width as needed */
+	max-width: 150px;
 	overflow: scroll;
 	white-space: nowrap;
 	cursor: pointer;
