@@ -1,46 +1,80 @@
+import Todo from "./todo.js";
 import Storage from "./storage.js";
 import EventListeners from "./eventListeners.js";
-
 const DomManipulation = (() => {
 	const todoList = document.querySelector(".todo-list");
 	const projectsContainer = document.querySelector(".projects-container");
-	const projectList = projectsContainer.querySelector("ul");
+	const projectListDOM = projectsContainer.querySelector("ul");
 
-	const overlay = document.getElementById("overlay");
-
-	const newTodoBtn = document.getElementById("new-todo-btn");
+	const addTodoBtn = document.getElementById("add-todo-btn");
 	const newProjectBtn = document.getElementById("new-project-btn");
 
-	const todoForm = document.getElementById("todoForm");
-	const formCancelBtn = document.getElementById("formCancelBtn");
+	const todoFormContainer = document.getElementById("todoFormContainer");
 
-	function editTodoForm(todo, project) {
-		todoForm.style.display = "block";
+	const closeFormBtn = document.getElementById("closeFormBtn");
+
+	newProjectBtn.addEventListener("click", () => {
+		addProjectForm.style.display = "block";
 		overlay.style.display = "block";
+	});
+	projectForm.addEventListener("submit", (event) => {
+		event.preventDefault();
+		EventListeners.projectFormEventListener();
+	});
+	closeProjectFormBtn.addEventListener("click", () => {
+		addProjectForm.style.display = "none";
+		overlay.style.display = "none";
+	});
 
-		const editTodoTitleInput = document.getElementById("todoTitle");
-		const editTodoDetailsInput = document.getElementById("todoDetails");
-		const editTodoDueDateInput = document.getElementById("todoDueDate");
+	addTodoBtn.addEventListener("click", () => {
+		editTodoBtn.style.display = "none";
+		submitNewTodoBtn.style.display = "block";
+		todoFormContainer.style.display = "block";
+		overlay.style.display = "block";
+	});
+	closeFormBtn.addEventListener("click", () => {
+		todoFormContainer.style.display = "none";
+		overlay.style.display = "none";
+	});
 
-		editTodoTitleInput.value = todo.title;
-		editTodoDetailsInput.value = todo.details;
-		editTodoDueDateInput.value = todo.dueDate;
+	const submitNewTodoBtn = document.getElementById("submitNewTodoBtn");
+	todoForm.addEventListener("submit", (event) => {
+		EventListeners.submitNewTodoEvent();
+		event.preventDefault();
+	});
 
-		EventListeners.attachEditFormSubmitListener(
-			todoForm,
-			editTodoTitleInput,
-			editTodoDetailsInput,
-			editTodoDueDateInput,
-			project,
-			todo,
-			newTodoBtn,
-			formCancelBtn
-		);
+	const homeProjectHeader = document.querySelector(".sidebar h2");
+	homeProjectHeader.addEventListener("click", () => {
+		submitNewTodoBtn.dataset.value = null;
+		DomManipulation.display(null);
+	});
+
+	function editTodo(todo, project) {
+		todoFormContainer.style.display = "block";
+		overlay.style.display = "block";
+		const TitleInput = document.getElementById("todoTitle");
+		const DetailsInput = document.getElementById("todoDetails");
+		const DueDateInput = document.getElementById("dueDate");
+
+		TitleInput.value = todo.title;
+		DetailsInput.value = todo.details;
+		DueDateInput.value = todo.dueDate;
+
+		const editTodoBtn = document.getElementById("editTodoBtn");
+		editTodoBtn.addEventListener("click", (event) => {
+			event.preventDefault();
+			const updatedTodo = new Todo(
+				TitleInput.value,
+				DetailsInput.value,
+				DueDateInput.value,
+				todo.completed
+			);
+			project.updateTodo(todo, updatedTodo);
+			DomManipulation.display(submitNewTodoBtn.dataset.value);
+			todoFormContainer.style.display = "none";
+			overlay.style.display = "none";
+		});
 	}
-
-	EventListeners.attachTodoFormListeners(newTodoBtn, overlay)
-		.attachProjectFormListeners(newProjectBtn, newTodoBtn, overlay)
-		.attachHomeListener(newTodoBtn);
 
 	function createtodoElement(todo, project) {
 		const todoElement = document.createElement("li");
@@ -88,7 +122,9 @@ const DomManipulation = (() => {
 		editButton.className = "edit";
 		editButton.textContent = "Edit";
 		editButton.addEventListener("click", (event) => {
-			editTodoForm(todo, project);
+			editTodoBtn.style.display = "block";
+			submitNewTodoBtn.style.display = "none";
+			editTodo(todo, project);
 		});
 
 		const deleteButton = document.createElement("button");
@@ -97,12 +133,12 @@ const DomManipulation = (() => {
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
 			if (
-				newTodoBtn.dataset.value == "null" ||
-				newTodoBtn.dataset.value == null
+				submitNewTodoBtn.dataset.value == "null" ||
+				submitNewTodoBtn.dataset.value == null
 			) {
 				display(null);
 			} else {
-				display(newTodoBtn.dataset.value);
+				display(submitNewTodoBtn.dataset.value);
 			}
 		});
 
@@ -138,23 +174,23 @@ const DomManipulation = (() => {
 		deleteButton.classList.add("delete-project-btn");
 		projectItem.appendChild(deleteButton);
 
-		projectList.appendChild(projectItem);
+		projectListDOM.appendChild(projectItem);
 
 		projectItem.addEventListener("click", () => {
 			display(index);
-			newTodoBtn.dataset.value = index;
+			submitNewTodoBtn.dataset.value = index;
 		});
 		deleteButton.addEventListener("click", (event) => {
 			event.stopPropagation();
 			Storage.projects.splice(index, 1);
 			if (Storage.projects.length === 0) {
 				display(null);
-			} else display(newTodoBtn.dataset.value);
+			} else display(submitNewTodoBtn.dataset.value);
 		});
 	}
 
 	function display(projectIndex) {
-		projectList.innerHTML = "";
+		projectListDOM.innerHTML = "";
 		Storage.projects.forEach((project, index) => {
 			createProjectElement(project, index);
 		});
@@ -166,13 +202,13 @@ const DomManipulation = (() => {
 					createtodoElement(todo, project);
 				});
 			});
-			newTodoBtn.style.display = "none";
+			addTodoBtn.style.display = "none";
 		} else {
 			const currentProject = Storage.projects[projectIndex];
 			currentProject.todos.forEach((todo) => {
 				createtodoElement(todo, currentProject);
 			});
-			newTodoBtn.style.display = "block";
+			addTodoBtn.style.display = "block";
 		}
 		Storage.saveProjectsToLocalStorage(Storage.projects);
 	}
