@@ -21,30 +21,6 @@ const EventListeners = (() => {
 		overlay.style.display = "none";
 	}
 
-	function editTodoFormEventListener(
-		edit,
-		todo,
-		project,
-		newTitle,
-		newDetails,
-		newDueDate
-	) {
-		if (edit) _editTodo(todo, project, newTitle, newDetails, newDueDate);
-		else _addTodo();
-
-		DomManipulation.display(addNewTodo.dataset.value);
-		todoFormContainer.style.display = "none";
-		overlay.style.display = "none";
-	}
-	function _editTodo(todo, project, newTitle, newDetails, newDueDate) {
-		const updatedTodo = new Todo(
-			newTitle.value,
-			newDetails.value,
-			newDueDate.value,
-			todo.completed
-		);
-		project.updateTodo(todo, updatedTodo);
-	}
 	function submitNewTodoEvent() {
 		const title = document.getElementById("todoTitle").value;
 		const details = document.getElementById("todoDetails").value;

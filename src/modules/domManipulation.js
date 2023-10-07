@@ -119,7 +119,7 @@ const DomManipulation = (() => {
 		btnContainerDiv.className = "btn-container";
 
 		const editButton = document.createElement("button");
-		editButton.className = "edit";
+		editButton.className = "edit-btn";
 		editButton.textContent = "Edit";
 		editButton.addEventListener("click", (event) => {
 			editTodoBtn.style.display = "block";
@@ -128,7 +128,7 @@ const DomManipulation = (() => {
 		});
 
 		const deleteButton = document.createElement("button");
-		deleteButton.className = "delete";
+		deleteButton.className = "delete-btn";
 		deleteButton.textContent = "Delete";
 		deleteButton.addEventListener("click", (event) => {
 			project.removeTodo(todo);
@@ -183,7 +183,10 @@ const DomManipulation = (() => {
 		deleteButton.addEventListener("click", (event) => {
 			event.stopPropagation();
 			Storage.projects.splice(index, 1);
-			if (Storage.projects.length === 0) {
+			if (
+				Storage.projects.length === 0 ||
+				submitNewTodoBtn.dataset.value === "null"
+			) {
 				display(null);
 			} else display(submitNewTodoBtn.dataset.value);
 		});
@@ -195,7 +198,7 @@ const DomManipulation = (() => {
 			createProjectElement(project, index);
 		});
 		todoList.innerHTML = "";
-
+		let editBtn = null;
 		if (projectIndex === null) {
 			Storage.projects.forEach((project) => {
 				project.todos.forEach((todo) => {
@@ -203,13 +206,18 @@ const DomManipulation = (() => {
 				});
 			});
 			addTodoBtn.style.display = "none";
+			editBtn = document.querySelector(".edit-btn");
+			if (editBtn != null) editBtn.disabled = true;
 		} else {
 			const currentProject = Storage.projects[projectIndex];
 			currentProject.todos.forEach((todo) => {
 				createtodoElement(todo, currentProject);
 			});
 			addTodoBtn.style.display = "block";
+			editBtn = document.querySelector(".edit-btn");
+			if (editBtn != null) editBtn.disabled = false;
 		}
+
 		Storage.saveProjectsToLocalStorage(Storage.projects);
 	}
 
