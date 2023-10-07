@@ -11,27 +11,9 @@
 		<div class="sidebar">
 			<h1>Todo List</h1>
 			<h2>Home</h2>
-			<h2>Today</h2>
-			<h2>This week</h2>
 			<div class="projects-container">
 				<h2>Projects</h2>
-				<ul class="project-list">
-					<li class="project-list-element" data-value="1">
-						Project1
-					</li>
-					<li class="project-list-element" data-value="2">
-						Project2
-					</li>
-					<li class="project-list-element" data-value="3">
-						Project3
-					</li>
-					<li class="project-list-element" data-value="4">
-						Project4
-					</li>
-					<li class="project-list-element" data-value="5">
-						Project5
-					</li>
-				</ul>
+				<ul class="project-list"></ul>
 				<button id="new-project-btn"><a>+</a></button>
 			</div>
 		</div>
@@ -52,8 +34,58 @@
 					</div>
 				</li>
 			</ul>
-			<button id="new-todo-btn" data-value="0"><a>+</a></button>
+			<button id="add-todo-btn" data-value="0"><a>+</a></button>
 		</main>
+
+		<div id="todoFormContainer" class="popup-form">
+			<h2>Add New Todo</h2>
+			<form id="todoForm">
+				<label for="todoTitle">Title:</label>
+				<input
+					type="text"
+					id="todoTitle"
+					name="todoTitle"
+					required
+				/><br />
+				<label for="todoDetails">Details:</label>
+				<textarea
+					id="todoDetails"
+					name="todoDetails"
+					rows="4"
+				></textarea
+				><br />
+				<label for="dueDate">Due Date:</label>
+				<input type="date" id="dueDate" name="dueDate" required /><br />
+				<div class="form-btn-container">
+					<button type="submit" id="submitNewTodoBtn">Submit</button>
+					<button type="submit" id="editTodoBtn">Edit</button>
+					<button type="button" id="closeFormBtn">Cancel</button>
+				</div>
+			</form>
+		</div>
+
+		<div id="addProjectForm" class="popup-form">
+			<h2>Add New Project</h2>
+			<form id="projectForm">
+				<label for="projectTitle">Title:</label>
+				<input
+					type="text"
+					id="projectTitle"
+					name="projectTitle"
+					required
+				/><br />
+				<label for="projectDescription">Description:</label>
+				<textarea
+					id="projectDescription"
+					name="projectDescription"
+					rows="4"
+				></textarea
+				><br />
+				<button type="submit">Add Project</button>
+				<button type="button" id="closeProjectFormBtn">Cancel</button>
+			</form>
+		</div>
+		<div class="overlay" id="overlay"></div>
 		<script src="main.js"></script>
 	</body>
 </html>

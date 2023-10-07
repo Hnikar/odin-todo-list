@@ -1,5 +1,7 @@
+/* reset.css */
 @import url("./reset.css");
 
+/* Variables */
 :root {
 	--primary: #dd9e8a;
 	--secondary: #271007;
@@ -8,10 +10,11 @@
 	--text: #fbede9;
 }
 
+/* General Styles */
 body {
 	display: grid;
 	grid-template-columns: 256px 1fr;
-	font-family: Roboto, sans-serif;
+	font-family: Verdana, sans-serif;
 	min-height: 100vh;
 	max-height: 100vh;
 	overflow: hidden;
@@ -29,13 +32,16 @@ header,
 	gap: 1rem;
 }
 
+/* Sidebar */
 .sidebar {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
 	background-color: var(--background);
 }
-
+h2 {
+	cursor: pointer;
+}
 .projects-container {
 	display: flex;
 	flex-direction: column;
@@ -43,17 +49,23 @@ header,
 }
 
 .project-list {
+	display: flex;
+	flex-direction: column;
 	margin: 0;
 	padding: 0;
 	padding-left: 18px;
 	list-style: none;
+	gap: 6px;
 }
+
 .project-list-element {
 	cursor: pointer;
 }
+
 .project-list-element:hover {
 	color: var(--accent);
 }
+
 #new-project-btn {
 	margin-left: 18px;
 	width: 80%;
@@ -61,11 +73,13 @@ header,
 	font-weight: 700;
 	font-size: 2rem;
 }
+
 #new-project-btn > a {
 	position: relative;
-	bottom: 12px;
+	bottom: 14px;
 }
 
+/* Main Content */
 main {
 	display: flex;
 	overflow-y: scroll;
@@ -73,11 +87,14 @@ main {
 	border: solid var(--background);
 	background-color: var(--secondary);
 	border-radius: 32px;
+	height: 97vmin;
 }
+
 .todo-list {
 	flex-direction: column;
 	padding: 16px;
 }
+
 .todo {
 	color: var(--background);
 	justify-content: space-between;
@@ -87,7 +104,41 @@ main {
 	border-radius: 24px;
 	padding: 16px;
 }
-#new-todo-btn {
+.todo.completed {
+	background-color: var(--primary); /* Change background color */
+	color: var(--text); /* Change text color */
+	opacity: 0.6; /* Reduce opacity to make it appear dimmer */
+	text-decoration: line-through;
+}
+.todo .details {
+	position: relative;
+}
+
+.todo .details::after {
+	content: attr(data-details);
+	display: none;
+	position: absolute;
+	top: -10px;
+	left: -200%;
+	transform: translateX(-50%);
+	background-color: var(--background);
+	border: 2px solid var(--accent);
+	border-radius: 8px;
+	padding: 10px;
+	font-size: 0.9rem;
+	color: var(--text);
+	width: 220px;
+	text-align: center;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	pointer-events: none;
+}
+
+.todo .details:hover::after {
+	display: block;
+}
+
+#add-todo-btn {
 	width: 25%;
 	height: 48px;
 	font-weight: 700;
@@ -95,30 +146,48 @@ main {
 	align-self: center;
 	border-radius: 24px;
 }
-#new-todo-btn > a {
+
+#add-todo-btn > a {
 	position: relative;
 	bottom: 12px;
 }
 
 .checkbox {
-	border: solid var(--accent);
+	appearance: none;
+	display: inline-block;
+	width: 23px;
+	height: 23px;
+	background-color: transparent;
+	border: 2px solid var(--accent);
+	border-radius: 4px;
+	position: relative;
+	margin-right: 10px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.checkbox::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-55%, -50%);
+	width: 15px;
+	height: 15px;
 	background-color: var(--accent);
-	border-radius: 8px;
+	border-radius: 2px;
+	opacity: 0;
+}
+
+.checkbox:checked::before {
+	opacity: 1;
 }
 
 .btn-container {
 	display: flex;
 	width: min-content;
 	gap: 8px;
-}
-
-#description {
-	display: none;
-	position: absolute;
-	padding: 10px;
-	background-color: var(--background);
-	border: 1px solid var(--accent);
-	border-radius: 4px;
 }
 
 button {
@@ -132,4 +201,123 @@ button {
 button:hover {
 	background-color: #943d22;
 	border: solid #943d22;
+}
+
+/* Popup Forms */
+.popup-form {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--background);
+	padding: 20px;
+	border: 2px solid var(--accent);
+	border-radius: 8px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	width: 300px;
+}
+
+.popup-form h2 {
+	margin-top: 0;
+	font-size: 1.5rem;
+	margin-bottom: 10px;
+}
+
+.popup-form label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.popup-form input[type="text"],
+.popup-form textarea,
+.popup-form input[type="date"] {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid var(--accent);
+	border-radius: 4px;
+	margin-bottom: 10px;
+}
+
+.popup-form button[type="submit"],
+.popup-form button[type="button"] {
+	padding: 8px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	color: var(--text);
+	background-color: var(--accent);
+	transition: background-color 0.3s ease;
+}
+
+.popup-form button[type="submit"]:hover,
+.popup-form button[type="button"]:hover {
+	background-color: #943d22;
+}
+
+.popup-form button[type="submit"] {
+	background-color: var(--accent);
+	margin-right: 10px;
+}
+
+.popup-form button[type="button"] {
+	background-color: #ccc;
+}
+
+.form-btn-container {
+	display: flex;
+}
+
+/* Overlay */
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	display: none;
+}
+
+/* Tooltip-like Box */
+.project-list-element {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	padding-right: 32px;
+}
+
+.project-list-element .project-name {
+	display: inline-block;
+	max-width: 150px; /* Adjust the maximum width as needed */
+	overflow: scroll;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.project-list-element .project-description {
+	display: none;
+	position: absolute;
+	top: -10px;
+	left: 150%;
+	transform: translateX(-50%);
+	background-color: var(--background);
+	border: 2px solid var(--accent);
+	border-radius: 8px;
+	padding: 10px;
+	font-size: 0.9rem;
+	color: var(--text);
+	width: 220px;
+	text-align: center;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	pointer-events: none;
+}
+
+.project-list-element:hover .project-description {
+	display: block;
 }
