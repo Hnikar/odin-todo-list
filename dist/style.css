@@ -87,6 +87,7 @@ main {
 	border: solid var(--background);
 	background-color: var(--secondary);
 	border-radius: 32px;
+	height: 97vmin;
 }
 
 .todo-list {
