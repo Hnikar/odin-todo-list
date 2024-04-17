@@ -1,6 +1,7 @@
-# TaskBuddy
+# Todo List
 
 This web application is designed to help users manage their projects and tasks efficiently. It provides a user-friendly interface for creating, editing, and organizing projects and tasks.
+This project was created as a part of the [Odin Project](https://www.theodinproject.com/) onile course.
 
 ## Features
 
