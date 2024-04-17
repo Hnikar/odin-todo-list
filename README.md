@@ -3,6 +3,10 @@
 This web application is designed to help users manage their projects and tasks efficiently. It provides a user-friendly interface for creating, editing, and organizing projects and tasks.
 This project was created as a part of the [Odin Project](https://www.theodinproject.com/) online course.
 
+## Live Demo
+
+Visit the live repo [here](https://hnikar.github.io/odin-todo-list/)!
+
 ## Features
 
 - **Project Management**: Create, edit, and delete projects.
